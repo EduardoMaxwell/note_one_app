@@ -63,15 +63,8 @@ fun HomeScreen() {
                     .padding(top = 16.dp)
             ) {
 
-                SearchBar {}
+                SearchBar()
 
-                LazyColumn {
-
-                    items(items) { item ->
-                        NoteItem(item)
-
-                    }
-                }
 
             }
 
@@ -96,24 +89,28 @@ fun MyTopAppBar(title: String, onBackPressed: () -> Unit) {
 }
 
 @Composable
-fun SearchBar(onSearch: (String) -> Unit) {
-    var searchText by remember { mutableStateOf("") }
+fun SearchBar() {
+    var searchQuery  by remember { mutableStateOf("") }
 
+    val filteredItems = if (searchQuery.isEmpty()) {
+        items
+    } else {
+        items.filter { it.title.contains(searchQuery, ignoreCase = true) }
+    }
 
     TextField(
-        value = searchText,
-        onValueChange = { searchText = it },
+        value = searchQuery ,
+        onValueChange = { searchQuery  = it },
         placeholder = { Text(text = stringResource(R.string.search_hint)) },
         singleLine = true,
         keyboardOptions = KeyboardOptions(
             keyboardType = KeyboardType.Text,
             imeAction = ImeAction.Search
         ),
-        keyboardActions = KeyboardActions(onSearch = { onSearch(searchText) }),
         trailingIcon = {
 
             IconButton(onClick = {
-                Log.d("HomeScreen", "SearchBar: $searchText")
+                Log.d("HomeScreen", "SearchBar: $searchQuery ")
             }) {
                 Icon(
                     imageVector = Icons.Default.Search,
@@ -131,6 +128,12 @@ fun SearchBar(onSearch: (String) -> Unit) {
         )
     )
 
+    LazyColumn {
+
+        items(filteredItems) { item ->
+            NoteItem(item)
+        }
+    }
 }
 
 @Composable
@@ -147,8 +150,13 @@ fun FloatActionButton() {
 val date = convertDateByPattern("dd MMMM yyyy")
 val items = listOf<Note>(
     Note(
-        "Estudar Compose",
-        "Bora estudar compose! Bora estudar compose Bora estudar compose Bora estudar compose SimpleDateFormat SimpleDateFormat SimpleDateFormat SimpleDateFormat",
+        "Ideias para um jantar especial",
+        "Escolha um tema que combine com o jantar, como por exemplo, uma noite italiana ou um jantar de frutos do mar.",
+        date
+    ),
+    Note(
+        "Como organizar a rotina de estudos",
+        "Faça um planejamento semanal das atividades que precisa realizar.",
         date
     ),
     Note(
@@ -157,8 +165,13 @@ val items = listOf<Note>(
         date
     ),
     Note(
-        "Estudar Compose",
-        "Bora estudar compose! Bora estudar compose Bora estudar compose Bora estudar compose SimpleDateFormat SimpleDateFormat SimpleDateFormat SimpleDateFormat",
+        "Como organizar a rotina de estudos",
+        "Utilize técnicas de memorização, como mapas mentais e resumos.\n",
+        date
+    ),
+    Note(
+        "Dicas para economizar dinheiro",
+        "Faça uma lista de gastos mensais e corte aqueles que não são essenciais.",
         date
     ),
     Note(
@@ -167,28 +180,18 @@ val items = listOf<Note>(
         date
     ),
     Note(
-        "Estudar Compose",
-        "Bora estudar compose! Bora estudar compose Bora estudar compose Bora estudar compose SimpleDateFormat SimpleDateFormat SimpleDateFormat SimpleDateFormat",
+        "Como se preparar para uma entrevista de emprego",
+        "Treine respostas para perguntas comuns em entrevistas.",
         date
     ),
     Note(
-        "Estudar Compose",
-        "Bora estudar compose! Bora estudar compose Bora estudar compose Bora estudar compose SimpleDateFormat SimpleDateFormat SimpleDateFormat SimpleDateFormat",
+        "Dicas para ter uma boa noite de sono",
+        "Evite utilizar eletrônicos antes de dormir.\n",
         date
     ),
     Note(
-        "Estudar Compose",
-        "Bora estudar compose! Bora estudar compose Bora estudar compose Bora estudar compose SimpleDateFormat SimpleDateFormat SimpleDateFormat SimpleDateFormat",
-        date
-    ),
-    Note(
-        "Estudar Compose",
-        "Bora estudar compose! Bora estudar compose Bora estudar compose Bora estudar compose SimpleDateFormat SimpleDateFormat SimpleDateFormat SimpleDateFormat",
-        date
-    ),
-    Note(
-        "Estudar Compose",
-        "Bora estudar compose! Bora estudar compose Bora estudar compose Bora estudar compose SimpleDateFormat SimpleDateFormat SimpleDateFormat SimpleDateFormat",
+        "Como fazer exercícios em casa",
+        "Escolha um espaço adequado e livre de obstáculos. Utilize equipamentos simples, como pesos e elásticos. Pesquise vídeos e tutoriais na internet para se inspirar.",
         date
     ),
 

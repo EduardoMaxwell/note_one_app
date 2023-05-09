@@ -6,7 +6,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Surface
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,26 +23,24 @@ import br.com.maxwell.eduardo.ui.theme.WhiteTransparent
 @Composable
 fun NoteItem(note: Note) {
 
-    Surface(
+    Card(
         modifier = Modifier
             .height(120.dp)
             .fillMaxWidth()
             .padding(start = 16.dp, top = 8.dp, end = 16.dp, bottom = 8.dp),
-        color = NoteColor,
+        backgroundColor = NoteColor,
         shape = RoundedCornerShape(10.dp),
         contentColor = Color.White
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.SpaceEvenly,
-        ) {
+            modifier = Modifier.fillMaxWidth()
+        )
+        {
             Text(text = note.title, Modifier.padding(start = 16.dp), style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Bold), maxLines = 1, overflow = TextOverflow.Ellipsis)
             Text(text = note.body, Modifier.padding(start = 16.dp, end = 16.dp), overflow = TextOverflow.Ellipsis, maxLines = 2)
             Text(text = "Criado em: ${note.createdDate}", Modifier.padding(start = 16.dp), style = TextStyle(color = WhiteTransparent))
         }
-
-
-
     }
 
 }
